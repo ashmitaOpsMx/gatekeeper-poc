@@ -15,7 +15,7 @@ import (
 const (
 	pocApi     = "/bundle.tar.gz"
 	postApi    = "/api/v1/poc"
-	postOpaApi = "/api/v1/opapoc"
+	postOpaApi = "/logs/api/v1/opapoc"
 )
 
 func loggingMiddleware(next http.Handler) http.Handler {
