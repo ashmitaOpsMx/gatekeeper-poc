@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: opa-gate-poc
+spec:
+  selector:
+    app: oes
+    component: opa-gate-poc
+  ports:
+    - name: opa-gate-poc
+      protocol: TCP
+      port: 8500
+      targetPort: 8500
+    

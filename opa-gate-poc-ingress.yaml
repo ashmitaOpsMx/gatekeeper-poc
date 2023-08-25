@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: opa-gate-poc-ingress
+spec:
+  rules:
+    - host: opa-gate-poc.opsmx.org
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: opa-gate-poc
+                port:
+                  number: 8500

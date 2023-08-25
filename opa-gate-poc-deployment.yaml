@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: opa-gate-poc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: oes
+      component: opa-gate-poc
+  template:
+    metadata:
+      labels:
+        app: oes
+        component: opa-gate-poc
+    spec:
+      volumes:
+      - name: example
+      containers:
+        - name: opa-gate-poc
+          image: genos1998/opa-gate-poc:v2
+          volumeMounts:
+            - name: example
+              mountPath: /app/example
+          ports:
+            - containerPort: 8500
+              protocol: TCP
