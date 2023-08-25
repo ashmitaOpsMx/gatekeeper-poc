@@ -65,7 +65,7 @@ images: buildtime clean-image-names set-git-info $(addsuffix .tstamp, $(addprefi
 buildtime/%.tstamp:: ${all_deps} Dockerfile
 	${BUILDX} \
 		--tag ${IMAGE_PREFIX}$(patsubst %.tstamp,%,$(@F)):latest \
-		--tag ${IMAGE_PREFIX}$(patsubst %.tstamp,%,$(@F)):v27 \
+		--tag ${IMAGE_PREFIX}$(patsubst %.tstamp,%,$(@F)):v28 \
 		--target $(patsubst %.tstamp,%,$(@F))-image \
 		--build-arg GIT_HASH=${GIT_HASH} \
 		--build-arg GIT_BRANCH=${GIT_BRANCH} \
@@ -73,7 +73,7 @@ buildtime/%.tstamp:: ${all_deps} Dockerfile
 		-f Dockerfile \
 		--push .
 	echo >> buildtime/image-names.txt ${IMAGE_PREFIX}$(patsubst %.tstamp,%,$(@F)):latest
-	echo >> buildtime/image-names.txt ${IMAGE_PREFIX}$(patsubst %.tstamp,%,$(@F)):v27
+	echo >> buildtime/image-names.txt ${IMAGE_PREFIX}$(patsubst %.tstamp,%,$(@F)):v28
 	@touch $@
 
 .PHONY: image-names
