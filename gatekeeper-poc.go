@@ -9,21 +9,35 @@ import (
 
 	"github.com/OpsMx/go-app-base/httputil"
 	"go.uber.org/zap"
+	"compress/gzip"
+	"io/ioutil"
 )
 
 func OPAPocPOST(w http.ResponseWriter, req *http.Request) {
-	defer req.Body.Close()
+	var data []byte
+	var err error
 
-	data, err := io.ReadAll(req.Body)
+	switch req.Header.Get("Content-Encoding") {
+	case "gzip":
+		reader, err := gzip.NewReader(req.Body)
+		if err != nil {
+			http.Error(w, "Failed to create gzip reader: "+err.Error(), http.StatusBadRequest)
+			return
+		}
+		defer reader.Close()
+		data, err = ioutil.ReadAll(reader)
+	default:
+		data, err = ioutil.ReadAll(req.Body)
+	}
+
 	if err != nil {
-		httputil.SetError(w, http.StatusBadRequest, err.Error())
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
 	fmt.Println(string(data))
 	fmt.Println("----------------")
 	zap.S().Info(string(data))
-
 }
 
 func OPAGatePocGET(w http.ResponseWriter, req *http.Request) {
