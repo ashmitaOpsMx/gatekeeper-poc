@@ -1,2 +1,2 @@
 genos1998/opa-gate-poc:latest
-genos1998/opa-gate-poc:v28
+genos1998/opa-gate-poc:v29

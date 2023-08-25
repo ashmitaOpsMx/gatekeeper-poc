@@ -7,5 +7,27 @@ api_response = output {
     output = response.body
 }
 
-# Main decision that always allows.
-main = {"allow": api_response.allow}
+# Set the default response as "allowed" in `main`.
+main = {
+    "apiVersion": "admission.k8s.io/v1",
+    "kind": "AdmissionReview",
+    "response": {
+        "uid": input.request.uid,
+        "allowed": true
+    }
+}
+
+# If api_response doesn't allow, then update the `main` response to disallow the request.
+main = {
+    "apiVersion": "admission.k8s.io/v1",
+    "kind": "AdmissionReview",
+    "response": {
+        "uid": input.request.uid,
+        "allowed": false,
+        "status": {
+            "message": "Disallowed by external API check"
+        }
+    }
+} {
+    not api_response.allow
+}
