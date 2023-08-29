@@ -2,6 +2,7 @@ package system
 
 import data.api_check.decision as api_decision
 import data.image_check.decision as image_decision
+import data.block_wildcard_ingress.decision as wildcard_ingress_decision
 
 # Default decision
 main = {
@@ -41,4 +42,19 @@ main = {
     }
 } {
     not image_decision.allowed
+}
+
+
+main = {
+    "apiVersion": "admission.k8s.io/v1",
+    "kind": "AdmissionReview",
+    "response": {
+        "uid": input.request.uid,
+        "allowed": wildcard_ingress_decision.allowed,
+        "status": {
+            "message": wildcard_ingress_decision.reason
+        }
+    }
+} {
+    not wildcard_ingress_decision.allowed
 }
